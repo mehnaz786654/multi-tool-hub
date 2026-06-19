@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Free Online QR Code Generator | Download Custom QR Codes</title>
+    <meta name="description" content="Generate customizable QR codes for websites, text, or links instantly. Completely free to download with no registration required.">
+    <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+
+    <header>
+        <h1>📱 QR Code Generator</h1>
+        <p>Convert any link or text into a downloadable QR Code instantly.</p>
+    </header>
+
+    <div class="ad-container">
+        <p class="ad-placeholder">Adsterra Banner (728x90)</p>
+    </div>
+
+    <!-- Back Button (Option 2) -->
+    <div style="max-width: 700px; margin: 20px auto 0 auto; padding: 0 10px;">
+        <a href="../index.html" style="display: inline-block; color: #3b82f6; text-decoration: none; font-weight: bold; font-size: 0.95rem;">
+            ← Back to Homepage
+        </a>
+    </div>
+
+    <main class="tool-wrapper" style="text-align: center;">
+        <div style="text-align: left; margin-bottom: 15px;">
+            <label><strong>Enter URL or Text:</strong></label>
+            <input type="text" id="qr-text" value="https://google.com" placeholder="e.g., https://yourwebsite.com">
+        </div>
+
+        <!-- QR Code Display Area -->
+        <div style="margin: 25px 0;">
+            <canvas id="qr-canvas"></canvas>
+        </div>
+        
+        <button class="btn" id="download-btn" style="background: #10b981;">Download QR Code</button>
+    </main>
+
+    <!-- SEO Content Section -->
+    <section class="seo-section">
+        <h2>How to Generate a QR Code Online?</h2>
+        <p>Creating a QR code is incredibly simple with our free online utility. Just type your destination link, text, or phone number into the input field above. The tool updates the QR code in real-time. Once generated, click the green "Download QR Code" button to save it as a high-quality image file.</p>
+        <h3>Where can you use these QR Codes?</h3>
+        <ul>
+            <li><strong>Business Cards:</strong> Let people scan your card to instantly save your phone number or visit your portfolio website.</li>
+            <li><strong>Restaurant Menus:</strong> Link directly to a digital food menu layout without printing physical copies.</li>
+            <li><strong>Product Packaging:</strong> Share product user manuals, discount codes, or brand social media pages easily.</li>
+        </ul>
+    </section>
+
+    <div class="ad-container">
+        <p class="ad-placeholder">Adsterra Native / Direct Link Slot</p>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 Multi-Tool Hub. All rights reserved.</p>
+    </footer>
+
+    <!-- QR Code Generator Library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrious/4.0.2/qrious.min.js"></script>
+    <script>
+        const qrText = document.getElementById('qr-text');
+        const qrCanvas = document.getElementById('qr-canvas');
+        const downloadBtn = document.getElementById('download-btn');
+
+        // Initializing the QRious library object
+        const qr = new QRious({
+            element: qrCanvas,
+            value: qrText.value,
+            size: 200,
+            background: '#ffffff',
+            foreground: '#0f172a' // Dark color scheme matching header
+        });
+
+        // Update QR code in real-time as user types
+        qrText.addEventListener('input', () => {
+            qr.value = qrText.value || " ";
+        });
+
+        // Download QR Code function
+        downloadBtn.addEventListener('click', () => {
+            const imageURI = qrCanvas.toDataURL("image/png");
+            const link = document.createElement('a');
+            link.href = imageURI;
+            link.download = 'multi-tool-hub-qrcode.png';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        });
+    </script>
+</body>
+</html>

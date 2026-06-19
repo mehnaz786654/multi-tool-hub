@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Free Online Word Counter & Character Analyzer</title>
+    <meta name="description" content="Count words, characters, sentences, and spaces in real-time. The best free online text counter tool for writers and SEO experts.">
+    <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+
+    <header>
+        <h1>📝 Word & Character Counter</h1>
+        <p>Analyze your text length dynamically and instantly.</p>
+    </header>
+
+    <div class="ad-container">
+        <p class="ad-placeholder">Adsterra Banner (728x90)</p>
+    </div>
+    <div style="max-width: 700px; margin: 20px auto 0 auto; padding: 0 10px;">
+    <a href="../index.html" style="display: inline-block; color: #3b82f6; text-decoration: none; font-weight: bold; font-size: 0.95rem; transition: color 0.2s;">
+        ← Back to Homepage
+    </a>
+</div>
+
+    <main class="tool-wrapper">
+        <label for="text-input"><strong>Paste or Type Your Content Below:</strong></label>
+        <textarea id="text-input" rows="10" placeholder="Start typing here..."></textarea>
+        
+        <div class="counter-stats">
+            <div>Words: <strong id="word-count">0</strong></div>
+            <div>Characters: <strong id="char-count">0</strong></div>
+            <div>Sentences: <strong id="sentence-count">0</strong></div>
+        </div>
+    </main>
+
+    <section class="seo-section">
+        <h2>How to Use the Free Online Word Counter?</h2>
+        <p>Our online Word Counter is a precise tool designed for bloggers, students, and SEO content writers. Simply paste your text or type directly into the analyzer box above, and the script will instantly count the exact numbers of words, total characters, and complete sentences.</p>
+        <h3>Why is keeping track of text length important?</h3>
+        <ul>
+            <li><strong>SEO Character Limits:</strong> Meta descriptions should idealistically be under 160 characters.</li>
+            <li><strong>Academic Assignments:</strong> Stay strictly within essay or report limits given by schools.</li>
+            <li><strong>Social Media Copywriting:</strong> Craft perfect length updates for Twitter, LinkedIn, or Facebook ads.</li>
+        </ul>
+    </section>
+
+    <div class="ad-container">
+        <p class="ad-placeholder">Adsterra Native / Direct Link Advertisement Slot</p>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 Multi-Tool Hub. All rights reserved.</p>
+    </footer>
+
+    <script>
+        const textInput = document.getElementById('text-input');
+        const wordCount = document.getElementById('word-count');
+        const charCount = document.getElementById('char-count');
+        const sentenceCount = document.getElementById('sentence-count');
+
+        textInput.addEventListener('input', () => {
+            const text = textInput.value.trim();
+            
+            // Characters count
+            charCount.innerText = text.length;
+            
+            // Words count
+            const words = text === "" ? [] : text.split(/\s+/);
+            wordCount.innerText = words.length;
+            
+            // Sentences count
+            const sentences = text === "" ? [] : text.split(/[.!?]+/).filter(s => s.trim().length > 0);
+            sentenceCount.innerText = sentences.length;
+        });
+    </script>
+</body>
+</html>
