@@ -54,7 +54,7 @@
                 <img id="image-preview" src="" alt="Resized Preview" style="max-width: 100%; height: auto; display: block; margin: 0 auto;">
             </div>
 
-            <a id="download-link" class="btn" style="background: #10b981; display: block; text-decoration: none; color: white; line-height: 2.5; font-weight: bold;">Download Resized Image</a>
+            <button class="btn" id="download-btn" style="background: #10b981;">Download Resized Image</button>
         </div>
     </main>
 
@@ -74,7 +74,7 @@
     <script>
         const imageInput = document.getElementById('image-input');
         const resizeBtn = document.getElementById('resize-btn');
-        const downloadLink = document.getElementById('download-link');
+        const downloadBtn = document.getElementById('download-btn');
         
         const originalSizeInfo = document.getElementById('original-size-info');
         const origDimensions = document.getElementById('orig-dimensions');
@@ -86,8 +86,8 @@
         const imagePreview = document.getElementById('image-preview');
 
         let sourceImage = new Image();
-        sourceImage.crossOrigin = "anonymous"; // GitHub context cross-origin secure access ke liye
         let originalFileWeight = "";
+        let finalReadyFile = null; // Asli File object store karne ke liye
 
         function formatFileSize(bytes) {
             if (bytes === 0) return '0 Bytes';
@@ -97,7 +97,7 @@
             return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
         }
 
-        // 1. Image Load
+        // 1. Image Input
         imageInput.addEventListener('change', function(e) {
             const file = e.target.files[0];
             if (file) {
@@ -117,7 +117,7 @@
             }
         });
 
-        // 2. Resize and Direct Link Generation
+        // 2. Resize and Strict File Object Object Conversion
         resizeBtn.addEventListener('click', function() {
             if (!imageInput.files[0]) {
                 alert("Please upload an image first!");
@@ -138,22 +138,46 @@
             const ctx = canvas.getContext('2d');
             ctx.drawImage(sourceImage, 0, 0, targetWidth, targetHeight);
             
-            // Standard Base64 Stream Link
-            const finalDataUrl = canvas.toDataURL('image/jpeg', 0.85);
-            imagePreview.src = finalDataUrl;
+            // Render basic preview
+            imagePreview.src = canvas.toDataURL('image/jpeg', 0.7);
 
-            // Direct HTML Anchor properties update 
-            downloadLink.href = finalDataUrl;
-            downloadLink.download = 'resized-image-hub.jpg'; 
+            // Strict Blob into File system structure wrapping
+            canvas.toBlob(function(blob) {
+                if (!blob) return;
+                
+                // Blob ko ek formal file metadata file system object me encapsulate karna
+                finalReadyFile = new File([blob], "resized-image.jpg", { type: "image/jpeg" });
+                
+                const newFileWeight = formatFileSize(finalReadyFile.size);
+                newDimensions.innerText = `${targetWidth} x ${targetHeight} px (${newFileWeight})`;
+                
+                previewSection.style.display = 'block';
+                previewSection.scrollIntoView({ behavior: 'smooth' });
+            }, 'image/jpeg', 0.85);
+        });
 
-            // Dynamic size display string
-            const head = 'data:image/jpeg;base64,';
-            const approxBytes = Math.round((finalDataUrl.length - head.length) * 3 / 4);
-            const newFileWeight = formatFileSize(approxBytes);
+        // 3. Forced Windows Extension Download Trigger
+        downloadBtn.addEventListener('click', function() {
+            if (!finalReadyFile) {
+                alert("Please resize the image first!");
+                return;
+            }
             
-            newDimensions.innerText = `${targetWidth} x ${targetHeight} px (${newFileWeight})`;
-            previewSection.style.display = 'block';
-            previewSection.scrollIntoView({ behavior: 'smooth' });
+            // Create object URL from the strict File wrapper
+            const fileUrl = URL.createObjectURL(finalReadyFile);
+            
+            const nativeAnchor = document.createElement('a');
+            nativeAnchor.href = fileUrl;
+            nativeAnchor.download = "resized-image.jpg"; // Force set extension metadata
+            
+            document.body.appendChild(nativeAnchor);
+            nativeAnchor.click();
+            
+            // Clean dynamic RAM pipeline reference
+            setTimeout(() => {
+                document.body.removeChild(nativeAnchor);
+                URL.revokeObjectURL(fileUrl);
+            }, 150);
         });
     </script>
 </body>
