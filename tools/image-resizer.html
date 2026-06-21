@@ -14,10 +14,8 @@
         <p>Convert and resize any image to your custom width and height easily.</p>
     </header>
 
-    <!-- Top Ad Container -->
     <div class="ad-container">
-        <!-- Aapka Adsterra Top Ad Code Yahan Aayega -->
-    </div>
+        </div>
 
     <div style="max-width: 700px; margin: 20px auto 0 auto; padding: 0 10px;">
         <a href="../index.html" style="display: inline-block; color: #3b82f6; text-decoration: none; font-weight: bold; font-size: 0.95rem; transition: color 0.2s;">
@@ -26,18 +24,15 @@
     </div>
 
     <main class="tool-wrapper" style="text-align: left;">
-        <!-- File Upload Box -->
         <div style="margin-bottom: 20px;">
             <label><strong>Upload Image:</strong></label>
             <input type="file" id="image-input" accept="image/*" style="width: 100%; padding: 10px; margin-top: 5px; border: 1px dashed #3b82f6; border-radius: 4px; background: #f8fafc; cursor: pointer;">
         </div>
 
-        <!-- Original Size Display -->
         <div id="original-size-info" style="display: none; margin-bottom: 15px; color: #475569; font-size: 0.95rem; background: #f1f5f9; padding: 8px; border-radius: 4px;">
             <strong>Original Size:</strong> <span id="orig-dimensions">0 x 0</span>
         </div>
 
-        <!-- New Dimensions Input -->
         <div style="display: flex; gap: 15px; margin-bottom: 20px;">
             <div style="flex: 1;">
                 <label><strong>New Width (px):</strong></label>
@@ -49,10 +44,8 @@
             </div>
         </div>
         
-        <!-- Action Buttons -->
         <button class="btn" id="resize-btn">Resize Image</button>
 
-        <!-- Preview and Download Section -->
         <div id="preview-section" style="display: none; margin-top: 25px; border-top: 2px dashed #e2e8f0; padding-top: 20px; text-align: center;">
             <p style="color: #10b981; font-weight: bold; margin-bottom: 10px;">✓ Image Resized Successfully!</p>
             <p style="font-size: 0.9rem; color: #64748b; margin-bottom: 15px;"><strong>New Size:</strong> <span id="new-dimensions">0 x 0</span></p>
@@ -71,10 +64,8 @@
         <p><strong>Privacy Note:</strong> Our tool processes your files directly inside your web browser using HTML5 Canvas client-side technology. Your private pictures are never uploaded to any external server, ensuring absolute privacy.</p>
     </section>
 
-    <!-- Bottom Ad Container -->
     <div class="ad-container">
-        <!-- Aapka Adsterra Bottom Ad Code Yahan Aayega -->
-    </div>
+        </div>
 
     <footer>
         <p>&copy; 2026 Multi-Tool Hub. All rights reserved.</p>
@@ -96,8 +87,8 @@
 
         let sourceImage = new Image();
         let originalFileWeight = "";
+        let finalOutputDataUrl = ""; // Global variable link data store karne ke liye
 
-        // Bytes ko KB/MB me convert karne ka function
         function formatFileSize(bytes) {
             if (bytes === 0) return '0 Bytes';
             const k = 1024;
@@ -106,7 +97,7 @@
             return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
         }
 
-        // 1. Image select hote hi dimensions aur original file weight dikhana
+        // 1. Image Load Section
         imageInput.addEventListener('change', function(e) {
             const file = e.target.files[0];
             if (file) {
@@ -126,7 +117,7 @@
             }
         });
 
-        // 2. Resize karne par dynamic compression check karna
+        // 2. Resize Action Section
         resizeBtn.addEventListener('click', function() {
             if (!imageInput.files[0]) {
                 alert("Please upload an image first!");
@@ -147,13 +138,13 @@
             const ctx = canvas.getContext('2d');
             ctx.drawImage(sourceImage, 0, 0, targetWidth, targetHeight);
             
-            // Jpeg compression logic (85% quality format)
-            const resizedDataUrl = canvas.toDataURL('image/jpeg', 0.85);
-            imagePreview.src = resizedDataUrl;
+            // Force rendering to safe base64 jpeg format
+            finalOutputDataUrl = canvas.toDataURL('image/jpeg', 0.85);
+            imagePreview.src = finalOutputDataUrl;
 
-            // Estimated New Weight Calculation
+            // Size Weight Check
             const head = 'data:image/jpeg;base64,';
-            const approxBytes = Math.round((resizedDataUrl.length - head.length) * 3 / 4);
+            const approxBytes = Math.round((finalOutputDataUrl.length - head.length) * 3 / 4);
             const newFileWeight = formatFileSize(approxBytes);
             
             newDimensions.innerText = `${targetWidth} x ${targetHeight} px (${newFileWeight})`;
@@ -161,32 +152,20 @@
             previewSection.scrollIntoView({ behavior: 'smooth' });
         });
 
-        // 3. Safe blob binary method Windows open crash error solve karne ke liye
+        // 3. Fallback High-Compatibility Download Trigger
         downloadBtn.addEventListener('click', function() {
-            if (!imageInput.files[0]) return;
-
-            const targetWidth = parseInt(newWidthInput.value);
-            const targetHeight = parseInt(newHeightInput.value);
-
-            const canvas = document.createElement('canvas');
-            canvas.width = targetWidth;
-            canvas.height = targetHeight;
-            const ctx = canvas.getContext('2d');
-            ctx.drawImage(sourceImage, 0, 0, targetWidth, targetHeight);
-
-            canvas.toBlob(function(blob) {
-                if (!blob) {
-                    alert("Error creating file download payload!");
-                    return;
-                }
-                const url = URL.createObjectURL(blob);
-                const link = document.createElement('a');
-                link.download = 'resized-image-hub.jpg';
-                link.href = url;
-                link.click();
-                
-                setTimeout(() => URL.revokeObjectURL(url), 100);
-            }, 'image/jpeg', 0.85);
+            if (!finalOutputDataUrl) {
+                alert("Please resize the image first!");
+                return;
+            }
+            
+            // Direct pure download anchor trigger (Windows friendly)
+            const downloadLink = document.createElement('a');
+            downloadLink.setAttribute('href', finalOutputDataUrl);
+            downloadLink.setAttribute('download', 'resized-image-hub.jpg');
+            document.body.appendChild(downloadLink);
+            downloadLink.click();
+            document.body.removeChild(downloadLink);
         });
     </script>
 </body>
