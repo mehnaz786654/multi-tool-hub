@@ -1,3 +1,6 @@
+/* ==========================================
+   Base Styles & Resets
+   ========================================== */
 * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Arial, sans-serif; }
 body { background-color: #f8fafc; color: #1e293b; display: flex; flex-direction: column; min-height: 100vh; }
 
@@ -5,114 +8,47 @@ header { background: linear-gradient(135deg, #1e293b, #0f172a); color: white; pa
 header h1 { font-size: 2.2rem; margin-bottom: 10px; }
 header p { color: #94a3b8; font-size: 1.1rem; }
 
-.ad-container { max-width: 900px; margin: 20px auto; text-align: center; padding: 10px; }
+.ad-container { max-width: 900px; margin: 20px auto; text-align: center; padding: 10px; width: 100%; }
 .ad-placeholder { background: #e2e8f0; border: 2px dashed #cbd5e1; padding: 20px; border-radius: 8px; color: #64748b; font-size: 0.9rem; }
 
-.container { max-width: 1200px; margin: 0 auto; padding: 20px; display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 25px; flex: 1; }
+.container { max-width: 1200px; margin: 0 auto; padding: 20px; display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 25px; flex: 1; width: 100%; }
 
 .tool-card { background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); text-align: center; text-decoration: none; color: inherit; border: 1px solid #e2e8f0; transition: all 0.3s ease; }
 .tool-card:hover { transform: translateY(-5px); box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); border-color: #3b82f6; }
-.tool-card.upcoming { opacity: 0.7; cursor: not-allowed; }
-.tool-card.upcoming:hover { transform: none; border-color: #e2e8f0; box-shadow: none; }
 
-.tool-icon { font-size: 45px; margin-bottom: 15px; }
-.tool-card h3 { font-size: 1.3rem; margin-bottom: 12px; color: #0f172a; }
-.tool-card p { font-size: 0.95rem; color: #64748b; line-height: 1.6; }
+.tool-wrapper { max-width: 700px; width: 95%; margin: 30px auto; background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); border: 1px solid #e2e8f0; }
 
-/* Tool Internal Page Styles */
-.tool-wrapper { max-width: 700px; margin: 30px auto; background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); border: 1px solid #e2e8f0; }
-textarea, input[type="text"], input[type="number"] { width: 100%; padding: 12px; border: 1px solid #cbd5e1; border-radius: 6px; margin-top: 10px; font-size: 1rem; outline: none; }
-textarea:focus, input:focus { border-color: #3b82f6; }
+textarea, input[type="text"], input[type="number"], input[type="date"] { width: 100%; padding: 12px; border: 1px solid #cbd5e1; border-radius: 6px; margin-top: 10px; font-size: 1rem; outline: none; box-sizing: border-box; }
 .btn { background: #3b82f6; color: white; border: none; padding: 12px 20px; font-size: 1rem; border-radius: 6px; cursor: pointer; width: 100%; margin-top: 15px; font-weight: bold; }
 .btn:hover { background: #2563eb; }
-.counter-stats { display: flex; justify-content: space-between; margin-top: 15px; background: #f1f5f9; padding: 15px; border-radius: 6px; }
 
-/* SEO Content Section */
-.seo-section { max-width: 900px; margin: 40px auto; padding: 20px; line-height: 1.7; }
-.seo-section h2 { margin-bottom: 15px; color: #0f172a; }
-.seo-section p, .seo-section li { color: #475569; margin-bottom: 12px; }
-/* ==========================================
-   Color Picker Tool Styles 
-   ========================================== */
-.color-box-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 20px;
-    background: #f8fafc;
-    padding: 20px;
-    border-radius: 6px;
-    border: 1px dashed #3b82f6;
-    margin-bottom: 20px;
-}
+/* Color Picker Styles */
+.color-box-container { display: flex; flex-direction: column; align-items: center; gap: 20px; background: #f8fafc; padding: 20px; border-radius: 6px; border: 1px dashed #3b82f6; margin-bottom: 20px; }
+.color-preview { width: 120px; height: 120px; border-radius: 6px; border: 1px solid #ccc; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); }
+.code-display { background: white; padding: 10px 15px; border: 1px solid #ccc; border-radius: 4px; font-family: monospace; font-size: 1.1rem; width: 100%; display: flex; justify-content: space-between; align-items: center; }
+.copy-btn { background: #3b82f6; color: white; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; font-size: 0.85rem; font-weight: bold; }
 
-.color-preview {
-    width: 120px;
-    height: 120px;
-    border-radius: 6px;
-    border: 1px solid #ccc;
-    box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
-}
-
-.code-display {
-    background: white;
-    padding: 10px 15px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    font-family: monospace;
-    font-size: 1.1rem;
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    box-sizing: border-box;
-}
-
-.copy-btn {
-    background: #3b82f6;
-    color: white;
-    border: none;
-    padding: 6px 12px;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 0.85rem;
-    font-weight: bold;
-    transition: background 0.2s;
-}
-
-.copy-btn:hover {
-    background: #2563eb;
-}
-
-.palette-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
-    gap: 15px;
-    margin-top: 25px;
-}
-
-.palette-card {
-    height: 90px;
-    border-radius: 6px;
-    cursor: pointer;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-end;
-    padding-bottom: 10px;
-    font-size: 0.8rem;
-    color: white;
-    font-weight: bold;
-    text-shadow: 1px 1px 3px rgba(0,0,0,0.8);
-    box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
-    transition: transform 0.2s, box-shadow 0.2s;
-    box-sizing: border-box;
-    border: 1px solid rgba(0,0,0,0.05);
-}
-
-.palette-card:hover {
-    transform: scale(1.05);
-    box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);
-}
+.palette-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; margin-top: 25px; }
+.palette-card { height: 90px; border-radius: 6px; cursor: pointer; display: flex; align-items: flex-end; justify-content: center; padding-bottom: 10px; font-size: 0.8rem; color: white; font-weight: bold; text-shadow: 1px 1px 3px rgba(0,0,0,0.8); border: 1px solid rgba(0,0,0,0.05); }
 
 footer { background: #0f172a; color: #94a3b8; text-align: center; padding: 20px; font-size: 0.9rem; margin-top: auto; }
+
+/* ==========================================
+   📱 RESPONSIVE MEDIA QUERIES
+   ========================================== */
+
+/* Tablet view */
+@media (max-width: 768px) {
+    header h1 { font-size: 1.8rem; }
+    .container { grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
+    .palette-grid { grid-template-columns: repeat(3, 1fr); }
+}
+
+/* Mobile view */
+@media (max-width: 480px) {
+    header { padding: 30px 15px; }
+    header h1 { font-size: 1.5rem; }
+    .tool-wrapper { padding: 20px; width: 95%; }
+    .palette-grid { grid-template-columns: repeat(2, 1fr); }
+    .code-display { font-size: 0.9rem; padding: 8px; }
+}
