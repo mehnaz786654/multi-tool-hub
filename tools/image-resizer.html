@@ -54,7 +54,7 @@
                 <img id="image-preview" src="" alt="Resized Preview" style="max-width: 100%; height: auto; display: block; margin: 0 auto;">
             </div>
 
-            <button class="btn" id="download-btn" style="background: #10b981;">Download Resized Image</button>
+            <a id="download-link" class="btn" style="background: #10b981; display: block; text-decoration: none; color: white; line-height: 2.5; font-weight: bold;">Download Resized Image</a>
         </div>
     </main>
 
@@ -74,7 +74,7 @@
     <script>
         const imageInput = document.getElementById('image-input');
         const resizeBtn = document.getElementById('resize-btn');
-        const downloadBtn = document.getElementById('download-btn');
+        const downloadLink = document.getElementById('download-link');
         
         const originalSizeInfo = document.getElementById('original-size-info');
         const origDimensions = document.getElementById('orig-dimensions');
@@ -86,8 +86,8 @@
         const imagePreview = document.getElementById('image-preview');
 
         let sourceImage = new Image();
+        sourceImage.crossOrigin = "anonymous"; // GitHub context cross-origin secure access ke liye
         let originalFileWeight = "";
-        let resizedDataUrl = ""; // Base64 data hold karne ke liye
 
         function formatFileSize(bytes) {
             if (bytes === 0) return '0 Bytes';
@@ -97,7 +97,7 @@
             return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
         }
 
-        // 1. Image Load Section
+        // 1. Image Load
         imageInput.addEventListener('change', function(e) {
             const file = e.target.files[0];
             if (file) {
@@ -117,7 +117,7 @@
             }
         });
 
-        // 2. Resize Action Section
+        // 2. Resize and Direct Link Generation
         resizeBtn.addEventListener('click', function() {
             if (!imageInput.files[0]) {
                 alert("Please upload an image first!");
@@ -136,38 +136,24 @@
             canvas.width = targetWidth;
             canvas.height = targetHeight;
             const ctx = canvas.getContext('2d');
-            
-            // Image draw karna
             ctx.drawImage(sourceImage, 0, 0, targetWidth, targetHeight);
             
-            // Standard JPEG link format set karna
-            resizedDataUrl = canvas.toDataURL('image/jpeg', 0.85);
-            imagePreview.src = resizedDataUrl;
+            // Standard Base64 Stream Link
+            const finalDataUrl = canvas.toDataURL('image/jpeg', 0.85);
+            imagePreview.src = finalDataUrl;
 
-            // Size display calculation
+            // Direct HTML Anchor properties update 
+            downloadLink.href = finalDataUrl;
+            downloadLink.download = 'resized-image-hub.jpg'; 
+
+            // Dynamic size display string
             const head = 'data:image/jpeg;base64,';
-            const approxBytes = Math.round((resizedDataUrl.length - head.length) * 3 / 4);
+            const approxBytes = Math.round((finalDataUrl.length - head.length) * 3 / 4);
             const newFileWeight = formatFileSize(approxBytes);
             
             newDimensions.innerText = `${targetWidth} x ${targetHeight} px (${newFileWeight})`;
             previewSection.style.display = 'block';
             previewSection.scrollIntoView({ behavior: 'smooth' });
-        });
-
-        // 3. Direct Standard Download Method
-        downloadBtn.addEventListener('click', function() {
-            if (!resizedDataUrl) {
-                alert("Please resize the image first!");
-                return;
-            }
-            
-            // Sabse safe download tarika jo direct link trigger karta hai
-            const link = document.createElement('a');
-            link.href = resizedDataUrl;
-            link.download = 'resized-image.jpg'; // Windows ko explicit extension batana uri hai
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
         });
     </script>
 </body>
