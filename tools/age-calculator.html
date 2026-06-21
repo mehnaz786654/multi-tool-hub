@@ -3,58 +3,70 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Accurate Age Calculator - Multi-Tool Hub</title>
-    <style>
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-        body { background-color: #f4f7f6; color: #333; display: flex; flex-direction: column; align-items: center; min-height: 100vh; padding: 20px; }
-        .container { background: #fff; padding: 30px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); max-width: 450px; width: 100%; text-align: center; margin-top: 20px; }
-        h1 { color: #2c3e50; margin-bottom: 20px; font-size: 24px; }
-        label { display: block; text-align: left; margin-bottom: 8px; font-weight: 600; color: #555; }
-        input[type="date"] { width: 100%; padding: 12px; margin-bottom: 20px; border: 1px solid #ccc; border-radius: 6px; font-size: 16px; }
-        button { width: 100%; padding: 12px; background-color: #3498db; color: white; border: none; border-radius: 6px; font-size: 16px; cursor: pointer; font-weight: bold; transition: background 0.3s; }
-        button:hover { background-color: #2980b9; }
-        .result { margin-top: 25px; padding: 15px; background: #eef2f7; border-radius: 6px; font-size: 18px; color: #2c3e50; font-weight: 600; display: none; line-height: 1.6; }
-        .back-btn { margin-top: 20px; display: inline-block; color: #7f8c8d; text-decoration: none; font-size: 14px; }
-        .back-btn:hover { color: #333; text-decoration: underline; }
-        .ad-container { margin: 20px 0; min-height: 90px; background: #fafafa; display: flex; align-items: center; justify-content: center; }
-    </style>
+    <title>Accurate Age Calculator | Instant Age Finder</title>
+    <meta name="description" content="Calculate your exact age in years, months, and days instantly. Quick, accurate, and reliable age calculator utility.">
+    <link rel="stylesheet" href="../style.css">
 </head>
 <body>
 
-    <!-- Top Ad Placement -->
+    <header>
+        <h1>📅 Accurate Age Calculator</h1>
+        <p>Calculate your exact age in years, months, and days instantly.</p>
+    </header>
+
+    <!-- Top Ad Container (Abhi testing ke liye khali rakha hai) -->
     <div class="ad-container">
-        <!-- APNE ADSTERRA BANNER YA SOCIAL BAR KA CODE YAHAN PASTE KAREIN -->
+        <!-- Aapka Adsterra Top Ad Code Yahan Aayega -->
     </div>
 
-    <div class="container">
-        <h1>Age Calculator</h1>
-        <label for="dob">Select Your Date of Birth:</label>
-        <input type="date" id="dob" max="2026-06-21">
-        
-        <button onclick="calculateAge()">Calculate Age</button>
-        
-        <div id="result" class="result"></div>
-        
-        <a href="../" class="back-btn">← Back to Home</a>
+    <div style="max-width: 700px; margin: 20px auto 0 auto; padding: 0 10px;">
+        <a href="../index.html" style="display: inline-block; color: #3b82f6; text-decoration: none; font-weight: bold; font-size: 0.95rem; transition: color 0.2s;">
+            ← Back to Homepage
+        </a>
     </div>
 
-    <!-- Bottom Ad Placement -->
+    <main class="tool-wrapper">
+        <div>
+            <label><strong>Select Date of Birth:</strong></label>
+            <input type="date" id="dob" style="width: 100%; padding: 10px; margin-top: 5px; border: 1px solid #ccc; border-radius: 4px; font-size: 1rem;">
+        </div>
+        
+        <input type="text" id="age-display" readonly placeholder="Your Exact Age Will Appear Here" style="margin-top: 15px;">
+        
+        <button class="btn" id="calculate-btn" style="margin-top: 15px;">Calculate Age</button>
+    </main>
+
+    <section class="seo-section">
+        <h2>Why Use an Online Age Calculator?</h2>
+        <p>Whether you are filling out an official registration form, checking your eligibility for an application, or just curious about exactly how many months and days you have completed on earth, manual calculation can be tricky. Our tool provides an instant, error-free result.</p>
+        <p><strong>Tip:</strong> This automated utility takes leap years into account completely on its own, ensuring that your calculated breakdown is 100% precise down to the exact day.</p>
+    </section>
+
+    <!-- Bottom Ad Container (Abhi testing ke liye khali rakha hai) -->
     <div class="ad-container">
-        <!-- APNE ADSTERRA POPUNDER YA BANNER KA CODE YAHAN PASTE KAREIN -->
+        <!-- Aapka Adsterra Bottom Ad Code Yahan Aayega -->
     </div>
+
+    <footer>
+        <p>&copy; 2026 Multi-Tool Hub. All rights reserved.</p>
+    </footer>
 
     <script>
-        // Aaj ki date tak hi select karne dene ke liye max attribute set karna
-        document.getElementById('dob').max = new Date().toISOString().split("T")[0];
+        const dobInput = document.getElementById('dob');
+        const displayInput = document.getElementById('age-display');
+        const calculateBtn = document.getElementById('calculate-btn');
+
+        // Aaj ki date tak hi lock karne ke liye taaki koi future date select na kare
+        dobInput.max = new Date().toISOString().split("T")[0];
 
         function calculateAge() {
-            const dobInput = document.getElementById('dob').value;
-            if (!dobInput) {
-                alert("Please select a valid date of birth!");
+            const dobValue = dobInput.value;
+            if (!dobValue) {
+                alert("Please select your date of birth!");
                 return;
             }
 
-            const dob = new Date(dobInput);
+            const dob = new Date(dobValue);
             const today = new Date();
 
             let years = today.getFullYear() - dob.getFullYear();
@@ -63,6 +75,7 @@
 
             if (days < 0) {
                 months--;
+                // Pichle mahine ke kul din nikal kar add karna
                 days += new Date(today.getFullYear(), today.getMonth(), 0).getDate();
             }
 
@@ -71,10 +84,11 @@
                 months += 12;
             }
 
-            const resultDiv = document.getElementById('result');
-            resultDiv.style.display = "block";
-            resultDiv.innerHTML = `You are <span style="color:#e74c3c;">${years}</span> Years, <span style="color:#e74c3c;">${months}</span> Months, and <span style="color:#e74c3c;">${days}</span> Days old.`;
+            // Output ko same usi display input box me dikhana jaise password generator me dikhta hai
+            displayInput.value = `${years} Years, ${months} Months, and ${days} Days Old`;
         }
+
+        calculateBtn.addEventListener('click', calculateAge);
     </script>
 </body>
 </html>
