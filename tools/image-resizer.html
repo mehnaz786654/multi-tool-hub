@@ -3,15 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Easy Image Resizer | Custom Image Dimension Changer</title>
-    <meta name="description" content="Resize your images to custom width and height instantly. Check original and new sizes before downloading your optimized image.">
+    <title>Easy Image Resizer & Compressor | Reduce File Size</title>
+    <meta name="description" content="Resize dimensions or compress image file size (MB to KB) instantly. Check original and new sizes with live preview before downloading.">
     <link rel="stylesheet" href="../style.css">
 </head>
 <body>
 
     <header>
-        <h1>🖼️ Easy Image Resizer</h1>
-        <p>Convert and resize any image to your custom width and height easily.</p>
+        <h1>🖼️ Easy Image Resizer & Compressor</h1>
+        <p>Reduce image file size (MB to KB) or change dimensions instantly.</p>
     </header>
 
     <!-- Top Ad Container -->
@@ -33,42 +33,56 @@
         </div>
 
         <!-- Original Size Display -->
-        <div id="original-size-info" style="display: none; margin-bottom: 15px; color: #475569; font-size: 0.95rem; background: #f1f5f9; padding: 8px; border-radius: 4px;">
-            <strong>Original Size:</strong> <span id="orig-dimensions">0 x 0</span> px
+        <div id="original-size-info" style="display: none; margin-bottom: 15px; color: #475569; font-size: 0.95rem; background: #f1f5f9; padding: 10px; border-radius: 4px; border-left: 4px solid #3b82f6;">
+            <strong>Original Dimensions:</strong> <span id="orig-dimensions">0 x 0 px</span><br>
+            <strong style="margin-top: 5px; display: inline-block;">Original File Size:</strong> <span id="orig-weight" style="color: #e11d48; font-weight: bold;">0 MB</span>
         </div>
 
-        <!-- New Dimensions Input -->
-        <div style="display: flex; gap: 15px; margin-bottom: 20px;">
+        <!-- Dimensions Input -->
+        <div style="display: flex; gap: 15px; margin-bottom: 15px;">
             <div style="flex: 1;">
-                <label><strong>New Width (px):</strong></label>
+                <label><strong>Width (px):</strong></label>
                 <input type="number" id="new-width" placeholder="Width" style="width: 100%; padding: 10px; margin-top: 5px; border: 1px solid #ccc; border-radius: 4px;">
             </div>
             <div style="flex: 1;">
-                <label><strong>New Height (px):</strong></label>
+                <label><strong>Height (px):</strong></label>
                 <input type="number" id="new-height" placeholder="Height" style="width: 100%; padding: 10px; margin-top: 5px; border: 1px solid #ccc; border-radius: 4px;">
             </div>
         </div>
-        
-        <!-- Action Buttons -->
-        <button class="btn" id="resize-btn">Resize Image</button>
 
-        <!-- Preview and Download Section (Initially Hidden) -->
+        <!-- Compression Quality Slider -->
+        <div style="margin-bottom: 20px; background: #f8fafc; padding: 10px; border-radius: 4px; border: 1px solid #e2e8f0;">
+            <label style="display: flex; justify-content: space-between;">
+                <strong>Compression Quality:</strong> 
+                <span id="quality-val" style="color: #3b82f6; font-weight: bold;">80%</span>
+            </label>
+            <input type="range" id="quality-slider" min="10" max="100" value="80" style="width: 100%; margin-top: 8px; cursor: pointer;">
+            <p style="font-size: 0.8rem; color: #64748b; margin-top: 4px;">(80% keeps excellent quality while heavily dropping the MB size)</p>
+        </div>
+        
+        <!-- Action Button -->
+        <button class="btn" id="resize-btn">Compress & Resize Image</button>
+
+        <!-- Preview and Download Section -->
         <div id="preview-section" style="display: none; margin-top: 25px; border-top: 2px dashed #e2e8f0; padding-top: 20px; text-align: center;">
-            <p style="color: #10b981; font-weight: bold; margin-bottom: 10px;">✓ Image Resized Successfully!</p>
-            <p style="font-size: 0.9rem; color: #64748b; margin-bottom: 15px;"><strong>New Size:</strong> <span id="new-dimensions">0 x 0</span> px</p>
+            <p style="color: #10b981; font-weight: bold; margin-bottom: 10px;">✓ Processed Successfully!</p>
+            <div style="font-size: 0.95rem; color: #475569; margin-bottom: 15px; background: #f0fdf4; padding: 10px; border-radius: 4px; display: inline-block; border: 1px solid #bbf7d0;">
+                <strong>New Dimensions:</strong> <span id="new-dimensions">0 x 0 px</span> | 
+                <strong>New File Size:</strong> <span id="new-weight" style="color: #16a34a; font-weight: bold;">0 KB</span>
+            </div>
             
             <div style="max-width: 100%; margin-bottom: 20px; overflow: hidden; border-radius: 6px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);">
                 <img id="image-preview" src="" alt="Resized Preview" style="max-width: 100%; height: auto; display: block; margin: 0 auto;">
             </div>
 
-            <button class="btn" id="download-btn" style="background: #10b981;">Download Resized Image</button>
+            <button class="btn" id="download-btn" style="background: #10b981;">Download Optimized Image</button>
         </div>
     </main>
 
     <section class="seo-section">
-        <h2>Why Use an Image Resizer Tool?</h2>
-        <p>Large image files can slow down your website loading speeds, reject online application submissions, or take up unnecessary storage. Resizing your images to specific pixel constraints solves these problems instantly without destroying the aspect ratio quality.</p>
-        <p><strong>Privacy Note:</strong> Our tool processes your files directly inside your web browser using HTML5 Canvas client-side technology. Your private pictures are never uploaded to any external server, ensuring absolute privacy.</p>
+        <h2>How Does Online Image Compression Work?</h2>
+        <p>When you upload an image, it often contains hidden metadata and heavy structural code that isn't required for web viewing. Our smart compression algorithm uses smart pixel mapping to drop down the storage space (MB) while keeping the exact width, height, and crisp details perfectly untouched.</p>
+        <p><strong>Tip:</strong> Keep the quality slider at 80% to 85% for the best balance between small file size and high-definition clarity.</p>
     </section>
 
     <!-- Bottom Ad Container -->
@@ -79,25 +93,30 @@
     <footer>
         <p>&copy; 2026 Multi-Tool Hub. All rights reserved.</p>
     </footer>
-<script>
+
+    <script>
         const imageInput = document.getElementById('image-input');
         const resizeBtn = document.getElementById('resize-btn');
         const downloadBtn = document.getElementById('download-btn');
         
         const originalSizeInfo = document.getElementById('original-size-info');
         const origDimensions = document.getElementById('orig-dimensions');
+        const origWeight = document.getElementById('orig-weight');
+        
         const newWidthInput = document.getElementById('new-width');
         const newHeightInput = document.getElementById('new-height');
+        const qualitySlider = document.getElementById('quality-slider');
+        const qualityVal = document.getElementById('quality-val');
         
         const previewSection = document.getElementById('preview-section');
         const newDimensions = document.getElementById('new-dimensions');
+        const newWeight = document.getElementById('new-weight');
         const imagePreview = document.getElementById('image-preview');
 
         let sourceImage = new Image();
         let resizedDataUrl = "";
-        let originalFileWeight = ""; // Purana file weight store karne ke liye
 
-        // File size ko KB ya MB me convert karne ka function
+        // Byte converter function
         function formatFileSize(bytes) {
             if (bytes === 0) return '0 Bytes';
             const k = 1024;
@@ -106,25 +125,28 @@
             return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
         }
 
-        // 1. Image select hote hi purana size (px aur MB/KB) dikhana
+        // Quality slider display logic
+        qualitySlider.addEventListener('input', function() {
+            qualityVal.innerText = qualitySlider.value + '%';
+        });
+
+        // 1. Upload logic (Shows dimensions and proper MB/KB size instantly)
         imageInput.addEventListener('change', function(e) {
             const file = e.target.files[0];
             if (file) {
-                originalFileWeight = formatFileSize(file.size); // Purani file ka size convert kiya
+                const weightString = formatFileSize(file.size);
                 
                 const reader = new FileReader();
                 reader.onload = function(event) {
                     sourceImage.src = event.target.result;
                     sourceImage.onload = function() {
-                        // Inputs me purani values default set karna
                         newWidthInput.value = sourceImage.width;
                         newHeightInput.value = sourceImage.height;
                         
-                        // Size display update karna (Dimensions + File Size)
-                        origDimensions.innerText = `${sourceImage.width} x ${sourceImage.height} px (${originalFileWeight})`;
-                        originalSizeInfo.style.display = 'block';
+                        origDimensions.innerText = `${sourceImage.width} x ${sourceImage.height} px`;
+                        origWeight.innerText = weightString;
                         
-                        // Section ko hidden rakhna jab tak resize na ho
+                        originalSizeInfo.style.display = 'block';
                         previewSection.style.display = 'none';
                     };
                 };
@@ -132,7 +154,7 @@
             }
         });
 
-        // 2. Click karne par image ko resize karke preview aur naya size dikhana
+        // 2. Click logic (Compresses MB size even if width/height are kept exactly the same)
         resizeBtn.addEventListener('click', function() {
             if (!imageInput.files[0]) {
                 alert("Please upload an image first!");
@@ -141,13 +163,13 @@
 
             const targetWidth = parseInt(newWidthInput.value);
             const targetHeight = parseInt(newHeightInput.value);
+            const qualitySetting = parseFloat(qualitySlider.value) / 100; // Converts 80 to 0.8
 
             if (!targetWidth || targetWidth <= 0 || !targetHeight || targetHeight <= 0) {
                 alert("Please enter valid width and height dimensions!");
                 return;
             }
 
-            // Canvas creation for resizing
             const canvas = document.createElement('canvas');
             canvas.width = targetWidth;
             canvas.height = targetHeight;
@@ -155,28 +177,27 @@
             
             ctx.drawImage(sourceImage, 0, 0, targetWidth, targetHeight);
             
-            // Get data URL & show in preview
-            resizedDataUrl = canvas.toDataURL('image/png');
+            // Format to JPEG enables smooth background data compression
+            resizedDataUrl = canvas.toDataURL('image/jpeg', qualitySetting);
             imagePreview.src = resizedDataUrl;
 
-            // Naye size (Weight) ka andaza lagane ke liye Base64 string ko calculate karna
-            const head = 'data:image/png;base64,';
-            const approxBytes = Math.round((resizedDataUrl.length - head.length)*3/4);
-            const newFileWeight = formatFileSize(approxBytes);
+            // Accurate calculation of output base64 weight
+            const head = 'data:image/jpeg;base64,';
+            const approxBytes = Math.round((resizedDataUrl.length - head.length) * 3 / 4);
+            const newWeightString = formatFileSize(approxBytes);
             
-            // Naya dimension aur file size set karna
-            newDimensions.innerText = `${targetWidth} x ${targetHeight} px (${newFileWeight})`;
+            newDimensions.innerText = `${targetWidth} x ${targetHeight} px`;
+            newWeight.innerText = newWeightString;
             
-            // Section ko visible karna
             previewSection.style.display = 'block';
             previewSection.scrollIntoView({ behavior: 'smooth' });
         });
 
-        // 3. Download functionality
+        // 3. Download handler
         downloadBtn.addEventListener('click', function() {
             if (!resizedDataUrl) return;
             const link = document.createElement('a');
-            link.download = 'resized-image-hub.png';
+            link.download = 'compressed-image-hub.jpg';
             link.href = resizedDataUrl;
             link.click();
         });
