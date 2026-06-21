@@ -18,7 +18,7 @@
         </div>
 
     <div style="max-width: 700px; margin: 20px auto 0 auto; padding: 0 10px;">
-        <a href="../index.html" style="display: inline-block; color: #3b82f6; text-decoration: none; font-weight: bold; font-size: 0.95rem; transition: color 0.2s;">
+        <a href="../index.html" style="display: inline-block; color: #3b82f6; text-decoration: none; font-weight: bold; font-size: 0.95rem;">
             ← Back to Homepage
         </a>
     </div>
@@ -60,8 +60,7 @@
 
     <section class="seo-section">
         <h2>Why Use an Image Resizer Tool?</h2>
-        <p>Large image files can slow down your website loading speeds, reject online application submissions, or take up unnecessary storage. Resizing your images to specific pixel constraints solves these problems instantly without destroying the aspect ratio quality.</p>
-        <p><strong>Privacy Note:</strong> Our tool processes your files directly inside your web browser using HTML5 Canvas client-side technology. Your private pictures are never uploaded to any external server, ensuring absolute privacy.</p>
+        <p>Large image files can slow down your website loading speeds, reject online application submissions, or take up unnecessary storage.</p>
     </section>
 
     <div class="ad-container">
@@ -87,7 +86,7 @@
 
         let sourceImage = new Image();
         let originalFileWeight = "";
-        let finalReadyFile = null; // Asli File object store karne ke liye
+        let currentBlob = null;
 
         function formatFileSize(bytes) {
             if (bytes === 0) return '0 Bytes';
@@ -97,7 +96,6 @@
             return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
         }
 
-        // 1. Image Input
         imageInput.addEventListener('change', function(e) {
             const file = e.target.files[0];
             if (file) {
@@ -117,7 +115,6 @@
             }
         });
 
-        // 2. Resize and Strict File Object Object Conversion
         resizeBtn.addEventListener('click', function() {
             if (!imageInput.files[0]) {
                 alert("Please upload an image first!");
@@ -128,7 +125,7 @@
             const targetHeight = parseInt(newHeightInput.value);
 
             if (!targetWidth || targetWidth <= 0 || !targetHeight || targetHeight <= 0) {
-                alert("Please enter valid width and height dimensions!");
+                alert("Please enter valid dimensions!");
                 return;
             }
 
@@ -138,46 +135,30 @@
             const ctx = canvas.getContext('2d');
             ctx.drawImage(sourceImage, 0, 0, targetWidth, targetHeight);
             
-            // Render basic preview
-            imagePreview.src = canvas.toDataURL('image/jpeg', 0.7);
+            // Ultra-compatible PNG format rendering
+            imagePreview.src = canvas.toDataURL('image/png');
 
-            // Strict Blob into File system structure wrapping
             canvas.toBlob(function(blob) {
                 if (!blob) return;
-                
-                // Blob ko ek formal file metadata file system object me encapsulate karna
-                finalReadyFile = new File([blob], "resized-image.jpg", { type: "image/jpeg" });
-                
-                const newFileWeight = formatFileSize(finalReadyFile.size);
+                currentBlob = blob;
+                const newFileWeight = formatFileSize(blob.size);
                 newDimensions.innerText = `${targetWidth} x ${targetHeight} px (${newFileWeight})`;
-                
                 previewSection.style.display = 'block';
                 previewSection.scrollIntoView({ behavior: 'smooth' });
-            }, 'image/jpeg', 0.85);
+            }, 'image/png');
         });
 
-        // 3. Forced Windows Extension Download Trigger
+        // Safe Native Blob File Saver
         downloadBtn.addEventListener('click', function() {
-            if (!finalReadyFile) {
-                alert("Please resize the image first!");
-                return;
-            }
-            
-            // Create object URL from the strict File wrapper
-            const fileUrl = URL.createObjectURL(finalReadyFile);
-            
-            const nativeAnchor = document.createElement('a');
-            nativeAnchor.href = fileUrl;
-            nativeAnchor.download = "resized-image.jpg"; // Force set extension metadata
-            
-            document.body.appendChild(nativeAnchor);
-            nativeAnchor.click();
-            
-            // Clean dynamic RAM pipeline reference
-            setTimeout(() => {
-                document.body.removeChild(nativeAnchor);
-                URL.revokeObjectURL(fileUrl);
-            }, 150);
+            if (!currentBlob) return;
+            const url = URL.createObjectURL(currentBlob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'resized-image.png'; // PNG extension explicitly forced
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            setTimeout(() => URL.revokeObjectURL(url), 100);
         });
     </script>
 </body>
