@@ -79,8 +79,7 @@
     <footer>
         <p>&copy; 2026 Multi-Tool Hub. All rights reserved.</p>
     </footer>
-
-    <script>
+<script>
         const imageInput = document.getElementById('image-input');
         const resizeBtn = document.getElementById('resize-btn');
         const downloadBtn = document.getElementById('download-btn');
@@ -96,11 +95,23 @@
 
         let sourceImage = new Image();
         let resizedDataUrl = "";
+        let originalFileWeight = ""; // Purana file weight store karne ke liye
 
-        // 1. Image select hote hi purana size dikhana
+        // File size ko KB ya MB me convert karne ka function
+        function formatFileSize(bytes) {
+            if (bytes === 0) return '0 Bytes';
+            const k = 1024;
+            const sizes = ['Bytes', 'KB', 'MB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+        }
+
+        // 1. Image select hote hi purana size (px aur MB/KB) dikhana
         imageInput.addEventListener('change', function(e) {
             const file = e.target.files[0];
             if (file) {
+                originalFileWeight = formatFileSize(file.size); // Purani file ka size convert kiya
+                
                 const reader = new FileReader();
                 reader.onload = function(event) {
                     sourceImage.src = event.target.result;
@@ -109,11 +120,11 @@
                         newWidthInput.value = sourceImage.width;
                         newHeightInput.value = sourceImage.height;
                         
-                        // Size display update karna
-                        origDimensions.innerText = `${sourceImage.width} x ${sourceImage.height}`;
+                        // Size display update karna (Dimensions + File Size)
+                        origDimensions.innerText = `${sourceImage.width} x ${sourceImage.height} px (${originalFileWeight})`;
                         originalSizeInfo.style.display = 'block';
                         
-                        // Agar pehle se koi purani resized image khuli ho toh use chhupana
+                        // Section ko hidden rakhna jab tak resize na ho
                         previewSection.style.display = 'none';
                     };
                 };
@@ -147,7 +158,14 @@
             // Get data URL & show in preview
             resizedDataUrl = canvas.toDataURL('image/png');
             imagePreview.src = resizedDataUrl;
-            newDimensions.innerText = `${targetWidth} x ${targetHeight}`;
+
+            // Naye size (Weight) ka andaza lagane ke liye Base64 string ko calculate karna
+            const head = 'data:image/png;base64,';
+            const approxBytes = Math.round((resizedDataUrl.length - head.length)*3/4);
+            const newFileWeight = formatFileSize(approxBytes);
+            
+            // Naya dimension aur file size set karna
+            newDimensions.innerText = `${targetWidth} x ${targetHeight} px (${newFileWeight})`;
             
             // Section ko visible karna
             previewSection.style.display = 'block';
