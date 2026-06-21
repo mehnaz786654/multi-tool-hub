@@ -3,118 +3,165 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Easy Image Resizer - Multi-Tool Hub</title>
-    <style>
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-        body { background-color: #f4f7f6; color: #333; display: flex; flex-direction: column; align-items: center; min-height: 100vh; padding: 20px; }
-        .container { background: #fff; padding: 30px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); max-width: 500px; width: 100%; text-align: center; margin-top: 20px; }
-        h1 { color: #2c3e50; margin-bottom: 20px; font-size: 24px; }
-        .upload-box { border: 2px dashed #3498db; padding: 20px; border-radius: 8px; cursor: pointer; background: #fbfcfd; margin-bottom: 20px; }
-        .upload-box:hover { background: #f0f7fc; }
-        input[type="file"] { display: none; }
-        .input-group { display: flex; justify-content: space-between; margin-bottom: 20px; gap: 10px; }
-        .input-field { width: 48%; text-align: left; }
-        .input-field label { display: block; margin-bottom: 5px; font-weight: 600; font-size: 14px; color: #555; }
-        .input-field input { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 6px; font-size: 16px; }
-        button { width: 100%; padding: 12px; background-color: #2ecc71; color: white; border: none; border-radius: 6px; font-size: 16px; cursor: pointer; font-weight: bold; transition: background 0.3s; }
-        button:hover { background-color: #27ae60; }
-        .preview-box { margin-top: 20px; display: none; }
-        img { max-width: 100%; max-height: 250px; border-radius: 6px; margin-bottom: 15px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
-        .back-btn { margin-top: 20px; display: inline-block; color: #7f8c8d; text-decoration: none; font-size: 14px; }
-        .back-btn:hover { color: #333; text-underline-position: under; text-decoration: underline; }
-        .ad-container { margin: 20px 0; min-height: 90px; background: #fafafa; display: flex; align-items: center; justify-content: center; width: 100%; }
-    </style>
+    <title>Easy Image Resizer | Custom Image Dimension Changer</title>
+    <meta name="description" content="Resize your images to custom width and height instantly. Check original and new sizes before downloading your optimized image.">
+    <link rel="stylesheet" href="../style.css">
 </head>
 <body>
 
-    <!-- Top Ad Placement -->
+    <header>
+        <h1>🖼️ Easy Image Resizer</h1>
+        <p>Convert and resize any image to your custom width and height easily.</p>
+    </header>
+
+    <!-- Top Ad Container -->
     <div class="ad-container">
-        <!-- APNE ADSTERRA CODE YAHAN PASTE KAREIN (BAAD ME) -->
+        <!-- Aapka Adsterra Top Ad Code Yahan Aayega -->
     </div>
 
-    <div class="container">
-        <h1>Image Resizer</h1>
-        
-        <div class="upload-box" onclick="document.getElementById('imageInput').click()">
-            <p style="color: #3498db; font-weight: 600;">📁 Click to Upload Image</p>
-            <span id="fileName" style="font-size: 12px; color: #7f8c8d;">No file chosen</span>
-            <input type="file" id="imageInput" accept="image/*" onchange="previewImage(event)">
-        </div>
-
-        <div class="input-group">
-            <div class="input-field">
-                <label for="widthInput">Width (px):</label>
-                <input type="number" id="widthInput" placeholder="Width">
-            </div>
-            <div class="input-field">
-                <label for="heightInput">Height (px):</label>
-                <input type="number" id="heightInput" placeholder="Height">
-            </div>
-        </div>
-
-        <button onclick="resizeImage()">Resize & Download</button>
-
-        <div class="preview-box" id="previewBox">
-            <h3 style="margin-bottom: 10px; font-size: 16px;">Image Preview:</h3>
-            <img id="imagePreview" src="" alt="Preview">
-        </div>
-        
-        <br>
-        <a href="../" class="back-btn">← Back to Home</a>
+    <div style="max-width: 700px; margin: 20px auto 0 auto; padding: 0 10px;">
+        <a href="../index.html" style="display: inline-block; color: #3b82f6; text-decoration: none; font-weight: bold; font-size: 0.95rem; transition: color 0.2s;">
+            ← Back to Homepage
+        </a>
     </div>
 
-    <!-- Bottom Ad Placement -->
+    <main class="tool-wrapper" style="text-align: left;">
+        <!-- File Upload Box -->
+        <div style="margin-bottom: 20px;">
+            <label><strong>Upload Image:</strong></label>
+            <input type="file" id="image-input" accept="image/*" style="width: 100%; padding: 10px; margin-top: 5px; border: 1px dashed #3b82f6; border-radius: 4px; background: #f8fafc; cursor: pointer;">
+        </div>
+
+        <!-- Original Size Display -->
+        <div id="original-size-info" style="display: none; margin-bottom: 15px; color: #475569; font-size: 0.95rem; background: #f1f5f9; padding: 8px; border-radius: 4px;">
+            <strong>Original Size:</strong> <span id="orig-dimensions">0 x 0</span> px
+        </div>
+
+        <!-- New Dimensions Input -->
+        <div style="display: flex; gap: 15px; margin-bottom: 20px;">
+            <div style="flex: 1;">
+                <label><strong>New Width (px):</strong></label>
+                <input type="number" id="new-width" placeholder="Width" style="width: 100%; padding: 10px; margin-top: 5px; border: 1px solid #ccc; border-radius: 4px;">
+            </div>
+            <div style="flex: 1;">
+                <label><strong>New Height (px):</strong></label>
+                <input type="number" id="new-height" placeholder="Height" style="width: 100%; padding: 10px; margin-top: 5px; border: 1px solid #ccc; border-radius: 4px;">
+            </div>
+        </div>
+        
+        <!-- Action Buttons -->
+        <button class="btn" id="resize-btn">Resize Image</button>
+
+        <!-- Preview and Download Section (Initially Hidden) -->
+        <div id="preview-section" style="display: none; margin-top: 25px; border-top: 2px dashed #e2e8f0; padding-top: 20px; text-align: center;">
+            <p style="color: #10b981; font-weight: bold; margin-bottom: 10px;">✓ Image Resized Successfully!</p>
+            <p style="font-size: 0.9rem; color: #64748b; margin-bottom: 15px;"><strong>New Size:</strong> <span id="new-dimensions">0 x 0</span> px</p>
+            
+            <div style="max-width: 100%; margin-bottom: 20px; overflow: hidden; border-radius: 6px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);">
+                <img id="image-preview" src="" alt="Resized Preview" style="max-width: 100%; height: auto; display: block; margin: 0 auto;">
+            </div>
+
+            <button class="btn" id="download-btn" style="background: #10b981;">Download Resized Image</button>
+        </div>
+    </main>
+
+    <section class="seo-section">
+        <h2>Why Use an Image Resizer Tool?</h2>
+        <p>Large image files can slow down your website loading speeds, reject online application submissions, or take up unnecessary storage. Resizing your images to specific pixel constraints solves these problems instantly without destroying the aspect ratio quality.</p>
+        <p><strong>Privacy Note:</strong> Our tool processes your files directly inside your web browser using HTML5 Canvas client-side technology. Your private pictures are never uploaded to any external server, ensuring absolute privacy.</p>
+    </section>
+
+    <!-- Bottom Ad Container -->
     <div class="ad-container">
-        <!-- APNE ADSTERRA CODE YAHAN PASTE KAREIN (BAAD ME) -->
+        <!-- Aapka Adsterra Bottom Ad Code Yahan Aayega -->
     </div>
+
+    <footer>
+        <p>&copy; 2026 Multi-Tool Hub. All rights reserved.</p>
+    </footer>
 
     <script>
-        let originalImage = new Image();
+        const imageInput = document.getElementById('image-input');
+        const resizeBtn = document.getElementById('resize-btn');
+        const downloadBtn = document.getElementById('download-btn');
+        
+        const originalSizeInfo = document.getElementById('original-size-info');
+        const origDimensions = document.getElementById('orig-dimensions');
+        const newWidthInput = document.getElementById('new-width');
+        const newHeightInput = document.getElementById('new-height');
+        
+        const previewSection = document.getElementById('preview-section');
+        const newDimensions = document.getElementById('new-dimensions');
+        const imagePreview = document.getElementById('image-preview');
 
-        function previewImage(event) {
-            const file = event.target.files[0];
+        let sourceImage = new Image();
+        let resizedDataUrl = "";
+
+        // 1. Image select hote hi purana size dikhana
+        imageInput.addEventListener('change', function(e) {
+            const file = e.target.files[0];
             if (file) {
-                document.getElementById('fileName').innerText = file.name;
                 const reader = new FileReader();
-                reader.onload = function(e) {
-                    originalImage.src = e.target.result;
-                    originalImage.onload = function() {
-                        document.getElementById('widthInput').value = originalImage.width;
-                        document.getElementById('heightInput').value = originalImage.height;
-                        document.getElementById('imagePreview').src = e.target.result;
-                        document.getElementById('previewBox').style.display = 'block';
-                    }
-                }
+                reader.onload = function(event) {
+                    sourceImage.src = event.target.result;
+                    sourceImage.onload = function() {
+                        // Inputs me purani values default set karna
+                        newWidthInput.value = sourceImage.width;
+                        newHeightInput.value = sourceImage.height;
+                        
+                        // Size display update karna
+                        origDimensions.innerText = `${sourceImage.width} x ${sourceImage.height}`;
+                        originalSizeInfo.style.display = 'block';
+                        
+                        // Agar pehle se koi purani resized image khuli ho toh use chhupana
+                        previewSection.style.display = 'none';
+                    };
+                };
                 reader.readAsDataURL(file);
             }
-        }
+        });
 
-        function resizeImage() {
-            const width = parseInt(document.getElementById('widthInput').value);
-            const height = parseInt(document.getElementById('heightInput').value);
-            const fileInput = document.getElementById('imageInput');
-
-            if (!fileInput.files[0]) {
+        // 2. Click karne par image ko resize karke preview aur naya size dikhana
+        resizeBtn.addEventListener('click', function() {
+            if (!imageInput.files[0]) {
                 alert("Please upload an image first!");
                 return;
             }
 
-            if (!width || !height) {
-                alert("Please enter valid width and height!");
+            const targetWidth = parseInt(newWidthInput.value);
+            const targetHeight = parseInt(newHeightInput.value);
+
+            if (!targetWidth || targetWidth <= 0 || !targetHeight || targetHeight <= 0) {
+                alert("Please enter valid width and height dimensions!");
                 return;
             }
 
+            // Canvas creation for resizing
             const canvas = document.createElement('canvas');
-            canvas.width = width;
-            canvas.height = height;
+            canvas.width = targetWidth;
+            canvas.height = targetHeight;
             const ctx = canvas.getContext('2d');
-            ctx.drawImage(originalImage, 0, 0, width, height);
+            
+            ctx.drawImage(sourceImage, 0, 0, targetWidth, targetHeight);
+            
+            // Get data URL & show in preview
+            resizedDataUrl = canvas.toDataURL('image/png');
+            imagePreview.src = resizedDataUrl;
+            newDimensions.innerText = `${targetWidth} x ${targetHeight}`;
+            
+            // Section ko visible karna
+            previewSection.style.display = 'block';
+            previewSection.scrollIntoView({ behavior: 'smooth' });
+        });
 
+        // 3. Download functionality
+        downloadBtn.addEventListener('click', function() {
+            if (!resizedDataUrl) return;
             const link = document.createElement('a');
-            link.download = 'resized-image.png';
-            link.href = canvas.toDataURL('image/png');
+            link.download = 'resized-image-hub.png';
+            link.href = resizedDataUrl;
             link.click();
-        }
+        });
     </script>
 </body>
 </html>
