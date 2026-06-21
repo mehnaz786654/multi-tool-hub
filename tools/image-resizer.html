@@ -87,7 +87,7 @@
 
         let sourceImage = new Image();
         let originalFileWeight = "";
-        let finalOutputDataUrl = ""; // Global variable link data store karne ke liye
+        let resizedDataUrl = ""; // Base64 data hold karne ke liye
 
         function formatFileSize(bytes) {
             if (bytes === 0) return '0 Bytes';
@@ -136,15 +136,17 @@
             canvas.width = targetWidth;
             canvas.height = targetHeight;
             const ctx = canvas.getContext('2d');
+            
+            // Image draw karna
             ctx.drawImage(sourceImage, 0, 0, targetWidth, targetHeight);
             
-            // Force rendering to safe base64 jpeg format
-            finalOutputDataUrl = canvas.toDataURL('image/jpeg', 0.85);
-            imagePreview.src = finalOutputDataUrl;
+            // Standard JPEG link format set karna
+            resizedDataUrl = canvas.toDataURL('image/jpeg', 0.85);
+            imagePreview.src = resizedDataUrl;
 
-            // Size Weight Check
+            // Size display calculation
             const head = 'data:image/jpeg;base64,';
-            const approxBytes = Math.round((finalOutputDataUrl.length - head.length) * 3 / 4);
+            const approxBytes = Math.round((resizedDataUrl.length - head.length) * 3 / 4);
             const newFileWeight = formatFileSize(approxBytes);
             
             newDimensions.innerText = `${targetWidth} x ${targetHeight} px (${newFileWeight})`;
@@ -152,20 +154,20 @@
             previewSection.scrollIntoView({ behavior: 'smooth' });
         });
 
-        // 3. Fallback High-Compatibility Download Trigger
+        // 3. Direct Standard Download Method
         downloadBtn.addEventListener('click', function() {
-            if (!finalOutputDataUrl) {
+            if (!resizedDataUrl) {
                 alert("Please resize the image first!");
                 return;
             }
             
-            // Direct pure download anchor trigger (Windows friendly)
-            const downloadLink = document.createElement('a');
-            downloadLink.setAttribute('href', finalOutputDataUrl);
-            downloadLink.setAttribute('download', 'resized-image-hub.jpg');
-            document.body.appendChild(downloadLink);
-            downloadLink.click();
-            document.body.removeChild(downloadLink);
+            // Sabse safe download tarika jo direct link trigger karta hai
+            const link = document.createElement('a');
+            link.href = resizedDataUrl;
+            link.download = 'resized-image.jpg'; // Windows ko explicit extension batana uri hai
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
         });
     </script>
 </body>
