@@ -18,13 +18,13 @@
         </div>
 
     <div style="max-width: 700px; margin: 20px auto 0 auto; padding: 0 10px;">
-        <a href="../index.html" style="display: inline-block; color: #3b82f6; text-decoration: none; font-weight: bold; font-size: 0.95rem;">
+        <a href="../index.html" style="display: inline-block; color: #3b82f6; text-decoration: none; font-weight: bold; font-size: 0.95rem; transition: color 0.2s;">
             ← Back to Homepage
         </a>
     </div>
 
     <main class="tool-wrapper" style="text-align: left;">
-        <div style="margin-bottom: 20px;">
+        <div id="upload-box-container" style="margin-bottom: 20px;">
             <label><strong>Upload Image:</strong></label>
             <input type="file" id="image-input" accept="image/*" style="width: 100%; padding: 10px; margin-top: 5px; border: 1px dashed #3b82f6; border-radius: 4px; background: #f8fafc; cursor: pointer;">
         </div>
@@ -54,13 +54,17 @@
                 <img id="image-preview" src="" alt="Resized Preview" style="max-width: 100%; height: auto; display: block; margin: 0 auto;">
             </div>
 
-            <button class="btn" id="download-btn" style="background: #10b981;">Download Resized Image</button>
+            <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
+                <button class="btn" id="download-btn" style="background: #10b981; flex: 1; min-width: 180px;">Download Resized Image</button>
+                <button class="btn" id="reset-btn" style="background: #64748b; flex: 1; min-width: 180px;">Upload Another Image</button>
+            </div>
         </div>
     </main>
 
     <section class="seo-section">
         <h2>Why Use an Image Resizer Tool?</h2>
-        <p>Large image files can slow down your website loading speeds, reject online application submissions, or take up unnecessary storage.</p>
+        <p>Large image files can slow down your website loading speeds, reject online application submissions, or take up unnecessary storage. Resizing your images to specific pixel constraints solves these problems instantly without destroying the aspect ratio quality.</p>
+        <p><strong>Privacy Note:</strong> Our tool processes your files directly inside your web browser using HTML5 Canvas client-side technology. Your private pictures are never uploaded to any external server, ensuring absolute privacy.</p>
     </section>
 
     <div class="ad-container">
@@ -74,6 +78,7 @@
         const imageInput = document.getElementById('image-input');
         const resizeBtn = document.getElementById('resize-btn');
         const downloadBtn = document.getElementById('download-btn');
+        const resetBtn = document.getElementById('reset-btn');
         
         const originalSizeInfo = document.getElementById('original-size-info');
         const origDimensions = document.getElementById('orig-dimensions');
@@ -96,6 +101,7 @@
             return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
         }
 
+        // 1. Image Load Section
         imageInput.addEventListener('change', function(e) {
             const file = e.target.files[0];
             if (file) {
@@ -115,6 +121,7 @@
             }
         });
 
+        // 2. Resize Logic
         resizeBtn.addEventListener('click', function() {
             if (!imageInput.files[0]) {
                 alert("Please upload an image first!");
@@ -125,7 +132,7 @@
             const targetHeight = parseInt(newHeightInput.value);
 
             if (!targetWidth || targetWidth <= 0 || !targetHeight || targetHeight <= 0) {
-                alert("Please enter valid dimensions!");
+                alert("Please enter valid width and height dimensions!");
                 return;
             }
 
@@ -135,30 +142,48 @@
             const ctx = canvas.getContext('2d');
             ctx.drawImage(sourceImage, 0, 0, targetWidth, targetHeight);
             
-            // Ultra-compatible PNG format rendering
+            // Safe PNG Format Preview
             imagePreview.src = canvas.toDataURL('image/png');
 
             canvas.toBlob(function(blob) {
                 if (!blob) return;
                 currentBlob = blob;
                 const newFileWeight = formatFileSize(blob.size);
+                
                 newDimensions.innerText = `${targetWidth} x ${targetHeight} px (${newFileWeight})`;
                 previewSection.style.display = 'block';
                 previewSection.scrollIntoView({ behavior: 'smooth' });
             }, 'image/png');
         });
 
-        // Safe Native Blob File Saver
+        // 3. Download Trigger
         downloadBtn.addEventListener('click', function() {
             if (!currentBlob) return;
             const url = URL.createObjectURL(currentBlob);
             const a = document.createElement('a');
             a.href = url;
-            a.download = 'resized-image.png'; // PNG extension explicitly forced
+            a.download = 'resized-image.png';
             document.body.appendChild(a);
             a.click();
             document.body.removeChild(a);
             setTimeout(() => URL.revokeObjectURL(url), 100);
+        });
+
+        // 4. Reset / Upload Another Image Functionality
+        resetBtn.addEventListener('click', function() {
+            // Saari fields aur images clear karna
+            imageInput.value = "";
+            newWidthInput.value = "";
+            newHeightInput.value = "";
+            imagePreview.src = "";
+            currentBlob = null;
+            
+            // UI elements hide karna
+            previewSection.style.display = 'none';
+            originalSizeInfo.style.display = 'none';
+            
+            // Page ko smoothly top par scroll karna taaki user dubara upload kar sake
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         });
     </script>
 </body>
